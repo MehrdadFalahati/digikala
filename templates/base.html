@@ -1,18 +1,50 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}دیجی‌کالا{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
+<header class="site-header">
+    <div class="container header-inner">
+        <a class="brand" href="{% url 'shops:home' %}">دیجی‌کالا</a>
+        <nav class="main-nav" aria-label="ناوبری اصلی">
+            <a href="{% url 'shops:stores' %}">فروشگاه‌ها</a>
+            {% if user.is_authenticated %}
+                {% if user.customer_profile %}
+                    <a href="{% url 'cart:detail' %}">سبد خرید</a>
+                    <a href="{% url 'orders:history' %}">سفارش‌های من</a>
+                    <a href="{% url 'accounts:customer_dashboard' %}">پنل مشتری</a>
+                {% endif %}
+                {% if user.seller_profile %}
+                    <a href="{% url 'shops:seller_dashboard' %}">پنل فروشنده</a>
+                {% endif %}
+                <form class="inline-form" method="post" action="{% url 'accounts:logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="link-button">خروج ({{ user.get_username }})</button>
+                </form>
+            {% else %}
+                <a href="{% url 'accounts:login' %}">ورود</a>
+                <a href="{% url 'accounts:signup' %}">ثبت‌نام</a>
+            {% endif %}
+        </nav>
+    </div>
+</header>
+<main class="container">
     {% if messages %}
-    <ul class="messages">
-        {% for message in messages %}<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>{% endfor %}
+    <ul class="messages" role="status">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
     </ul>
     {% endif %}
-    <main>
-        {% block content %}{% endblock %}
-    </main>
+    {% block content %}{% endblock %}
+</main>
+<footer class="site-footer">
+    <div class="container">پروژهٔ آموزشی دیجی‌کالا — پرداخت آزمایشی است و به درگاه بانکی متصل نیست.</div>
+</footer>
 </body>
 </html>

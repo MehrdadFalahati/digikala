@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 {% block title %}خروج{% endblock %}
 {% block content %}
-<h1>خروج انجام شد</h1>
-<p>با موفقیت از حساب خود خارج شدید.</p>
-<p><a href="{% url 'accounts:login' %}">ورود دوباره</a></p>
+<div class="auth-card">
+    <h1>خروج انجام شد</h1>
+    <p>با موفقیت از حساب خود خارج شدید.</p>
+    <p><a href="{% url 'accounts:login' %}">ورود دوباره</a></p>
+</div>
 {% endblock %}

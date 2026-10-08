@@ -2,30 +2,42 @@
 {% block title %}{{ store.name }}{% endblock %}
 {% block content %}
 <h1>{{ store.name }}</h1>
-{% if store.description %}<p>{{ store.description }}</p>{% endif %}
+{% if store.description %}<p class="muted">{{ store.description }}</p>{% endif %}
 {% if is_owner %}
-<p><a href="{% url 'shops:product_create' store.pk %}">افزودن محصول</a></p>
+<p><a class="button" href="{% url 'shops:product_create' store.pk %}">افزودن محصول</a></p>
 {% endif %}
-<ul>
+
+<ul class="product-grid">
     {% for product in products %}
-    <li>
-        {{ product.name }}
-        — {{ product.price }} تومان
-        — موجودی: {{ product.stock }}
-        {% if is_owner %}
-            <a href="{% url 'shops:product_update' product.pk %}">ویرایش</a>
+    <li class="card">
+        {% if product.image %}
+        <img class="product-image" src="{{ product.image.url }}" alt="{{ product.name }}">
+        {% else %}
+        <div class="product-image placeholder">بدون تصویر</div>
         {% endif %}
-        {% if user.customer_profile %}
+        <h2>{{ product.name }}</h2>
+        {% if product.category %}<p class="muted">دسته‌بندی: {{ product.category.name }}</p>{% endif %}
+        <p class="price">{{ product.price }} تومان</p>
+        {% if product.stock %}
+        <p class="stock">موجودی: {{ product.stock }}</p>
+        {% else %}
+        <p class="stock out-of-stock">ناموجود</p>
+        {% endif %}
+        {% if is_owner %}
+        <p><a href="{% url 'shops:product_update' product.pk %}">ویرایش محصول</a></p>
+        {% endif %}
+        {% if user.customer_profile and product.stock %}
         <form method="post" action="{% url 'cart:add' %}">
             {% csrf_token %}
             <input type="hidden" name="product_id" value="{{ product.pk }}">
-            <input type="number" name="quantity" value="1" min="1">
+            <label for="qty-store-{{ product.pk }}">تعداد</label>
+            <input id="qty-store-{{ product.pk }}" type="number" name="quantity" value="1" min="1">
             <button type="submit">افزودن به سبد</button>
         </form>
         {% endif %}
     </li>
     {% empty %}
-    <li>این فروشگاه هنوز محصولی ندارد.</li>
+    <li class="empty-state">این فروشگاه هنوز محصولی ندارد.</li>
     {% endfor %}
 </ul>
 <p><a href="{% url 'shops:stores' %}">بازگشت به فهرست فروشگاه‌ها</a></p>

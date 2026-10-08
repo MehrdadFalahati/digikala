@@ -2,7 +2,7 @@
 {% block title %}سفارش {{ order.pk }}{% endblock %}
 {% block content %}
 <h1>سفارش شمارهٔ {{ order.pk }}</h1>
-<p>تاریخ ثبت: {{ order.date }}</p>
+<p class="muted">تاریخ ثبت: {{ order.date }}</p>
 <table>
     <thead>
         <tr>
@@ -24,8 +24,13 @@
         </tr>
         {% endfor %}
     </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="4">جمع کل</td>
+            <td>{{ order.total_amount }} تومان</td>
+        </tr>
+    </tfoot>
 </table>
-<p>جمع کل: {{ order.total_amount }} تومان</p>
 <p>
     <a href="{% url 'orders:history' %}">سفارش‌های من</a>
     | <a href="{% url 'accounts:customer_dashboard' %}">پنل مشتری</a>

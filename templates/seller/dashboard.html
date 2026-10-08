@@ -2,16 +2,31 @@
 {% block title %}پنل فروشنده{% endblock %}
 {% block content %}
 <h1>پنل فروشنده</h1>
-<p><a href="{% url 'shops:store_create' %}">ساخت فروشگاه جدید</a></p>
-<ul>
-    {% for store in stores %}
-    <li>
-        {{ store.name }} — موجودی: {{ store.balance }} تومان
-        | <a href="{% url 'shops:store_detail' store.pk %}">مشاهده</a>
-        | <a href="{% url 'shops:store_update' store.pk %}">ویرایش</a>
-    </li>
-    {% empty %}
-    <li>هنوز فروشگاهی نساخته‌اید.</li>
-    {% endfor %}
-</ul>
+<p><a class="button" href="{% url 'shops:store_create' %}">ساخت فروشگاه جدید</a></p>
+{% if stores %}
+<table>
+    <thead>
+        <tr>
+            <th>فروشگاه</th>
+            <th>موجودی (تومان)</th>
+            <th>مدیریت</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for store in stores %}
+        <tr>
+            <td>{{ store.name }}</td>
+            <td>{{ store.balance }}</td>
+            <td>
+                <a href="{% url 'shops:store_detail' store.pk %}">مشاهده</a>
+                | <a href="{% url 'shops:store_update' store.pk %}">ویرایش</a>
+                | <a href="{% url 'shops:product_create' store.pk %}">افزودن محصول</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p class="empty-state">هنوز فروشگاهی نساخته‌اید.</p>
+{% endif %}
 {% endblock %}

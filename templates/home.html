@@ -1,27 +1,50 @@
 {% extends "base.html" %}
-{% block title %}دیجی‌کالا{% endblock %}
+{% block title %}دیجی‌کالا — محصولات{% endblock %}
 {% block content %}
 <h1>محصولات تازه</h1>
-<p>
-    <a href="{% url 'shops:stores' %}">همهٔ فروشگاه‌ها</a>
-    {% if user.is_authenticated %}
-        | <span>خوش آمدید، {{ user.get_username }}</span>
-        | <a href="{% url 'shops:seller_dashboard' %}">پنل فروشنده</a>
-    {% else %}
-        | <a href="{% url 'accounts:login' %}">ورود</a>
-        | <a href="{% url 'accounts:signup' %}">ثبت‌نام</a>
-    {% endif %}
-</p>
-<ul>
+
+<form method="get" action="{% url 'shops:home' %}" class="search-form" role="search">
+    <div class="field">
+        <label for="{{ search_form.q.id_for_label }}">{{ search_form.q.label }}</label>
+        {{ search_form.q }}
+        {{ search_form.q.errors }}
+    </div>
+    <div class="field">
+        <label for="{{ search_form.category.id_for_label }}">{{ search_form.category.label }}</label>
+        {{ search_form.category }}
+        {{ search_form.category.errors }}
+    </div>
+    <button type="submit">جست‌وجو</button>
+</form>
+
+<ul class="product-grid">
     {% for product in products %}
-    <li>
-        <a href="{% url 'shops:store_detail' product.store_id %}">{{ product.name }}</a>
-        — {{ product.store.name }}
-        — {{ product.price }} تومان
-        — موجودی: {{ product.stock }}
+    <li class="card">
+        {% if product.image %}
+        <img class="product-image" src="{{ product.image.url }}" alt="{{ product.name }}">
+        {% else %}
+        <div class="product-image placeholder">بدون تصویر</div>
+        {% endif %}
+        <h2><a href="{% url 'shops:store_detail' product.store_id %}">{{ product.name }}</a></h2>
+        <p class="muted">{{ product.store.name }}{% if product.category %} — {{ product.category.name }}{% endif %}</p>
+        <p class="price">{{ product.price }} تومان</p>
+        {% if product.stock %}
+        <p class="stock">موجودی: {{ product.stock }}</p>
+        {% else %}
+        <p class="stock out-of-stock">ناموجود</p>
+        {% endif %}
+        {% if user.customer_profile and product.stock %}
+        <form method="post" action="{% url 'cart:add' %}">
+            {% csrf_token %}
+            <input type="hidden" name="product_id" value="{{ product.pk }}">
+            <label for="qty-home-{{ product.pk }}">تعداد</label>
+            <input id="qty-home-{{ product.pk }}" type="number" name="quantity" value="1" min="1">
+            <button type="submit">افزودن به سبد</button>
+        </form>
+        {% endif %}
     </li>
     {% empty %}
-    <li>هنوز محصولی ثبت نشده است.</li>
+    <li class="empty-state">محصولی یافت نشد.</li>
     {% endfor %}
 </ul>
 {% endblock %}

@@ -7,14 +7,22 @@ from django.shortcuts import get_object_or_404, redirect, render
 
 from accounts.permissions import seller_for_user
 
-from .forms import ProductForm, StoreForm
+from .forms import ProductForm, ProductSearchForm, StoreForm
 from .models import Product, Store
 
 
 def home(request):
-    """Landing page: all products, newest first."""
+    """Landing page with optional search and category filters, newest first."""
+    search_form = ProductSearchForm(request.GET or None)
     products = Product.objects.select_related("store", "category")
-    return render(request, "home.html", {"products": products})
+    if search_form.is_bound and search_form.is_valid():
+        query = search_form.cleaned_data["q"].strip()
+        category = search_form.cleaned_data["category"]
+        if query:
+            products = products.filter(name__icontains=query)
+        if category is not None:
+            products = products.filter(category=category)
+    return render(request, "home.html", {"products": products, "search_form": search_form})
 
 
 def stores(request):

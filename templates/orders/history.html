@@ -3,18 +3,28 @@
 {% block content %}
 <h1>سفارش‌های من</h1>
 {% if orders %}
-<ul>
-    {% for order in orders %}
-    <li>
-        سفارش شمارهٔ {{ order.pk }}
-        — {{ order.total_amount }} تومان
-        — {{ order.date }}
-        | <a href="{% url 'orders:detail' order.pk %}">جزئیات</a>
-    </li>
-    {% endfor %}
-</ul>
+<table>
+    <thead>
+        <tr>
+            <th>شمارهٔ سفارش</th>
+            <th>تاریخ</th>
+            <th>جمع کل (تومان)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in orders %}
+        <tr>
+            <td>{{ order.pk }}</td>
+            <td>{{ order.date }}</td>
+            <td>{{ order.total_amount }}</td>
+            <td><a href="{% url 'orders:detail' order.pk %}">جزئیات</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 {% else %}
-<p>هنوز سفارشی ثبت نکرده‌اید.</p>
+<p class="empty-state">هنوز سفارشی ثبت نکرده‌اید.</p>
 {% endif %}
 <p><a href="{% url 'accounts:customer_dashboard' %}">بازگشت به پنل مشتری</a></p>
 {% endblock %}

@@ -23,7 +23,8 @@
             <td>
                 <form method="post" action="{% url 'cart:update' item.pk %}">
                     {% csrf_token %}
-                    <input type="number" name="quantity" value="{{ item.quantity }}" min="1">
+                    <label for="qty-cart-{{ item.pk }}">تعداد</label>
+                    <input id="qty-cart-{{ item.pk }}" type="number" name="quantity" value="{{ item.quantity }}" min="1">
                     <button type="submit">به‌روزرسانی</button>
                 </form>
             </td>
@@ -31,20 +32,27 @@
             <td>
                 <form method="post" action="{% url 'cart:remove' item.pk %}">
                     {% csrf_token %}
-                    <button type="submit">حذف</button>
+                    <button type="submit" class="link-button">حذف</button>
                 </form>
             </td>
         </tr>
         {% endfor %}
     </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="4">جمع کل</td>
+            <td colspan="2">{{ total }} تومان</td>
+        </tr>
+    </tfoot>
 </table>
-<p>جمع کل: {{ total }} تومان</p>
-<form method="post" action="{% url 'orders:checkout' %}">
-    {% csrf_token %}
-    <input type="hidden" name="checkout_key" value="{{ customer.checkout_key }}">
-    <button type="submit">پرداخت آزمایشی</button>
-</form>
+<div class="button-row">
+    <form method="post" action="{% url 'orders:checkout' %}">
+        {% csrf_token %}
+        <input type="hidden" name="checkout_key" value="{{ customer.checkout_key }}">
+        <button type="submit">پرداخت آزمایشی</button>
+    </form>
+</div>
 {% else %}
-<p>سبد خرید شما خالی است.</p>
+<p class="empty-state">سبد خرید شما خالی است. <a href="{% url 'shops:home' %}">مشاهدهٔ محصولات</a></p>
 {% endif %}
 {% endblock %}

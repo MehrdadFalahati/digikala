@@ -5,7 +5,7 @@ from django.test import TestCase
 from django.urls import reverse
 
 from accounts.models import SellerProfile
-from shops.models import Product, Store
+from shops.models import Category, Product, Store
 
 User = get_user_model()
 
@@ -72,3 +72,67 @@ class CatalogTests(TestCase):
         for store in stores:
             self.assertEqual(store.owner_id, self.seller.pk)
             self.assertEqual(store.balance, Decimal("0.00"))
+
+    def test_product_search(self):
+        store = Store.objects.create(name="فروشگاه", owner=self.seller)
+        category = Category.objects.create(name="دیجیتال")
+        matching = Product.objects.create(
+            name="گوشی سامسونگ",
+            price=Decimal("1000.00"),
+            stock=1,
+            store=store,
+            category=category,
+        )
+        Product.objects.create(
+            name="لپ‌تاپ ایسوس", price=Decimal("2000.00"), stock=1, store=store
+        )
+
+        response = self.client.get(reverse("shops:home"), {"q": "سامسونگ"})
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(list(response.context["products"]), [matching])
+
+    def test_category_and_combined_filters(self):
+        store = Store.objects.create(name="فروشگاه", owner=self.seller)
+        digital = Category.objects.create(name="دیجیتال")
+        home_category = Category.objects.create(name="خانه")
+        phone = Product.objects.create(
+            name="گوشی سامسونگ",
+            price=Decimal("1000.00"),
+            stock=1,
+            store=store,
+            category=digital,
+        )
+        laptop = Product.objects.create(
+            name="لپ‌تاپ سامسونگ",
+            price=Decimal("2000.00"),
+            stock=1,
+            store=store,
+            category=digital,
+        )
+        Product.objects.create(
+            name="کتری برقی",
+            price=Decimal("3000.00"),
+            stock=1,
+            store=store,
+            category=home_category,
+        )
+
+        by_category = self.client.get(reverse("shops:home"), {"category": digital.pk})
+        self.assertEqual(by_category.status_code, 200)
+        self.assertEqual(list(by_category.context["products"]), [laptop, phone])
+
+        combined = self.client.get(
+            reverse("shops:home"), {"q": "گوشی", "category": digital.pk}
+        )
+        self.assertEqual(combined.status_code, 200)
+        self.assertEqual(list(combined.context["products"]), [phone])
+
+    def test_invalid_search_parameters(self):
+        response = self.client.get(reverse("shops:home"), {"category": "not-a-number"})
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.context["search_form"].errors)
+
+        response = self.client.get(reverse("shops:home"), {"q": "x" * 101})
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(response.context["search_form"].errors)

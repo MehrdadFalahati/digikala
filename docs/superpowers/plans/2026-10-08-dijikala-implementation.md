@@ -248,7 +248,7 @@ self.assertFalse(CartItem.objects.filter(customer=customer).exists())
 - Extends `ProductForm` with optional image upload and category selection. Accept decoded PNG, JPEG, or WebP images up to 5 MiB; validate contents rather than trusting extensions or MIME headers.
 - Produces a complete shared layout with role-appropriate navigation, validation errors, messages, empty states, and explicit toman labels.
 
-- [ ] **Step 1: Write tests for optional feature behavior.** Add `test_product_search`, `test_category_and_combined_filters`, `test_invalid_search_parameters`, `test_valid_image_upload`, and `test_invalid_image_upload`. Assert product-name search, category filtering, combined filters, and newest-first ordering after filtering. Assert malformed category parameters and overlong search input display errors without a 500. Assert a valid image is saved while oversized files, non-images renamed as images, and unsupported decoded formats are rejected. Use a temporary media directory and clean it after tests.
+- [x] **Step 1: Write tests for optional feature behavior.** Add `test_product_search`, `test_category_and_combined_filters`, `test_invalid_search_parameters`, `test_valid_image_upload`, and `test_invalid_image_upload`. Assert product-name search, category filtering, combined filters, and newest-first ordering after filtering. Assert malformed category parameters and overlong search input display errors without a 500. Assert a valid image is saved while oversized files, non-images renamed as images, and unsupported decoded formats are rejected. Use a temporary media directory and clean it after tests.
 
 ```python
 self.assertEqual(search_response.status_code, 200)
@@ -258,10 +258,10 @@ self.assertTrue(invalid_category_response.context["search_form"].errors)
 self.assertFalse(invalid_image_form.is_valid())
 ```
 
-- [ ] **Step 2: Run the failing feature tests.** Run `python manage.py test shops.tests.test_catalog shops.tests.test_product_media --verbosity 2`. Expect failures for missing filtering or upload validation.
-- [ ] **Step 3: Implement search, image validation, and the shared UI.** Render all required pages with `lang="fa"` and `dir="rtl"`. Preserve the PDF's desktop navigation grouping: logo left, account/store actions right; stack appropriately on narrow screens. Show the cart only for authenticated customers and management controls only to authorized sellers. Provide image placeholders, accessible labels, visible keyboard focus, form errors, and clear stock/empty-cart/empty-order states. Serve uploaded media only through development configuration.
-- [ ] **Step 4: Verify behavior and inspect the rendered pages.** Run the shop test modules and `python manage.py check`. Inspect landing, stores, seller forms, customer panel, cart, payment, and order confirmation at approximately 390 px and 1280 px widths. Confirm readable Persian text, usable forms, no horizontal overflow, and working navigation.
-- [ ] **Step 5: Commit.** Commit with `feat: complete Persian marketplace interface and catalog extras`.
+- [x] **Step 2: Run the failing feature tests.** Run `python manage.py test shops.tests.test_catalog shops.tests.test_product_media --verbosity 2`. Expect failures for missing filtering or upload validation.
+- [x] **Step 3: Implement search, image validation, and the shared UI.** Render all required pages with `lang="fa"` and `dir="rtl"`. Preserve the PDF's desktop navigation grouping: logo left, account/store actions right; stack appropriately on narrow screens. Show the cart only for authenticated customers and management controls only to authorized sellers. Provide image placeholders, accessible labels, visible keyboard focus, form errors, and clear stock/empty-cart/empty-order states. Serve uploaded media only through development configuration.
+- [x] **Step 4: Verify behavior and inspect the rendered pages.** Run the shop test modules and `python manage.py check`. Inspect landing, stores, seller forms, customer panel, cart, payment, and order confirmation at approximately 390 px and 1280 px widths. Confirm readable Persian text, usable forms, no horizontal overflow, and working navigation.
+- [x] **Step 5: Commit.** Commit with `feat: complete Persian marketplace interface and catalog extras`.
 
 ### Task 8: Add Repeatable Demo Data and Setup Documentation
 

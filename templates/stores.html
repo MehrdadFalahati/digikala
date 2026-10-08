@@ -2,12 +2,14 @@
 {% block title %}فروشگاه‌ها{% endblock %}
 {% block content %}
 <h1>فروشگاه‌ها</h1>
-<ul>
+<ul class="product-grid">
     {% for store in stores %}
-    <li><a href="{% url 'shops:store_detail' store.pk %}">{{ store.name }}</a></li>
+    <li class="card">
+        <h2><a href="{% url 'shops:store_detail' store.pk %}">{{ store.name }}</a></h2>
+        {% if store.description %}<p class="muted">{{ store.description }}</p>{% endif %}
+    </li>
     {% empty %}
-    <li>هنوز فروشگاهی ساخته نشده است.</li>
+    <li class="empty-state">هنوز فروشگاهی ساخته نشده است.</li>
     {% endfor %}
 </ul>
-<p><a href="{% url 'shops:home' %}">بازگشت به صفحه اصلی</a></p>
 {% endblock %}
