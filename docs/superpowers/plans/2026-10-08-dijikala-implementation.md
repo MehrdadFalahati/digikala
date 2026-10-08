@@ -271,11 +271,11 @@ self.assertFalse(invalid_image_form.is_valid())
 - Produces `python manage.py seed_demo`, creating the same named sample customers, sellers, stores, categories, and products when rerun.
 - Produces documented setup, test, sample-data, and manual-demonstration procedures.
 
-- [ ] **Step 1: Write the seed-command test.** Add `test_seed_demo_is_repeatable` and `test_seed_demo_preserves_existing_data`. Call `seed_demo` twice and assert the second run does not duplicate users, stores, categories, or products. Assert seeded relationships and usable role-specific credentials; assert rerunning does not overwrite existing balances, purchase history, or manually changed passwords.
-- [ ] **Step 2: Run the failing test.** Run `python manage.py test shops.tests.test_seed_demo --verbosity 2`. Expect an unknown-command failure.
-- [ ] **Step 3: Implement the command and README.** Create two sellers with separate stores, at least one customer with a demo balance, and products in multiple categories. Document any demonstration credentials as local demo credentials. Explain copying `.env.example` to `.env`, editing values, creating the virtual environment, installing requirements, starting PostgreSQL, running migrations, creating an admin, seeding data, starting Django, and running tests. Include the alternative of an already installed PostgreSQL service and the need for permission to create the test database.
-- [ ] **Step 4: Verify seeding and instructions.** Run the seed test and execute the documented sequence against a separate disposable database without deleting existing project data. Confirm the customer can buy from both stores and sellers see their own balances.
-- [ ] **Step 5: Commit.** Commit with `docs: add repeatable demo data and setup instructions`.
+- [x] **Step 1: Write the seed-command test.** Add `test_seed_demo_is_repeatable` and `test_seed_demo_preserves_existing_data`. Call `seed_demo` twice and assert the second run does not duplicate users, stores, categories, or products. Assert seeded relationships and usable role-specific credentials; assert rerunning does not overwrite existing balances, purchase history, or manually changed passwords.
+- [x] **Step 2: Run the failing test.** Run `python manage.py test shops.tests.test_seed_demo --verbosity 2`. Expect an unknown-command failure.
+- [x] **Step 3: Implement the command and README.** Create two sellers with separate stores, at least one customer with a demo balance, and products in multiple categories. Document any demonstration credentials as local demo credentials. Explain copying `.env.example` to `.env`, editing values, creating the virtual environment, installing requirements, starting PostgreSQL, running migrations, creating an admin, seeding data, starting Django, and running tests. Include the alternative of an already installed PostgreSQL service and the need for permission to create the test database.
+- [x] **Step 4: Verify seeding and instructions.** Run the seed test and execute the documented sequence against a separate disposable database without deleting existing project data. Confirm the customer can buy from both stores and sellers see their own balances.
+- [x] **Step 5: Commit.** Commit with `docs: add repeatable demo data and setup instructions`.
 
 ### Task 9: Verify the Complete Homework Deliverable
 
