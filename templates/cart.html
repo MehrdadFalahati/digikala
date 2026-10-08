@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}سبد خرید{% endblock %}
+{% block content %}
+<h1>سبد خرید</h1>
+{% if items %}
+<table>
+    <thead>
+        <tr>
+            <th>محصول</th>
+            <th>فروشگاه</th>
+            <th>قیمت واحد</th>
+            <th>تعداد</th>
+            <th>جمع ردیف</th>
+            <th>حذف</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in items %}
+        <tr>
+            <td>{{ item.product.name }}</td>
+            <td>{{ item.product.store.name }}</td>
+            <td>{{ item.product.price }} تومان</td>
+            <td>
+                <form method="post" action="{% url 'cart:update' item.pk %}">
+                    {% csrf_token %}
+                    <input type="number" name="quantity" value="{{ item.quantity }}" min="1">
+                    <button type="submit">به‌روزرسانی</button>
+                </form>
+            </td>
+            <td>{{ item.line_total }} تومان</td>
+            <td>
+                <form method="post" action="{% url 'cart:remove' item.pk %}">
+                    {% csrf_token %}
+                    <button type="submit">حذف</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<p>جمع کل: {{ total }} تومان</p>
+{% else %}
+<p>سبد خرید شما خالی است.</p>
+{% endif %}
+{% endblock %}

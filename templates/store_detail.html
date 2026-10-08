@@ -15,6 +15,14 @@
         {% if is_owner %}
             <a href="{% url 'shops:product_update' product.pk %}">ویرایش</a>
         {% endif %}
+        {% if user.customer_profile %}
+        <form method="post" action="{% url 'cart:add' %}">
+            {% csrf_token %}
+            <input type="hidden" name="product_id" value="{{ product.pk }}">
+            <input type="number" name="quantity" value="1" min="1">
+            <button type="submit">افزودن به سبد</button>
+        </form>
+        {% endif %}
     </li>
     {% empty %}
     <li>این فروشگاه هنوز محصولی ندارد.</li>

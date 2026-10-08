@@ -167,7 +167,7 @@ self.assertEqual(store.balance, Decimal("0.00"))
 - Produces `add_item(*, customer_id: int, product_id: int, quantity: int) -> CartItem`, `set_quantity(*, customer_id: int, item_id: int, quantity: int) -> CartItem`, and `remove_item(*, customer_id: int, item_id: int) -> None`.
 - Produces URL names `cart:detail`, `cart:add`, `cart:update`, and `cart:remove`.
 
-- [ ] **Step 1: Write cart behavior and isolation tests.** Add `test_multistore_cart`, `test_repeat_add_increments_quantity`, `test_invalid_quantities`, `test_foreign_cart_item_denied`, `test_cart_mutation_rotates_checkout_key`, and `test_cart_mutations_require_post`. Assert products from different stores coexist, adding a product again increments its existing row, and quantities must be positive and no greater than available stock. Assert other customers' item IDs cannot be changed or removed. Assert cart mutations rotate `CustomerProfile.checkout_key`, and GET requests cannot mutate data.
+- [x] **Step 1: Write cart behavior and isolation tests.** Add `test_multistore_cart`, `test_repeat_add_increments_quantity`, `test_invalid_quantities`, `test_foreign_cart_item_denied`, `test_cart_mutation_rotates_checkout_key`, and `test_cart_mutations_require_post`. Assert products from different stores coexist, adding a product again increments its existing row, and quantities must be positive and no greater than available stock. Assert other customers' item IDs cannot be changed or removed. Assert cart mutations rotate `CustomerProfile.checkout_key`, and GET requests cannot mutate data.
 
 ```python
 self.assertEqual(CartItem.objects.filter(customer=customer, product=product).count(), 1)
@@ -177,10 +177,10 @@ self.assertNotEqual(customer.checkout_key, previous_checkout_key)
 self.assertEqual(other_customer_remove.status_code, 404)
 ```
 
-- [ ] **Step 2: Run the failing tests.** Run `python manage.py test cart.tests.test_cart --verbosity 2`. Expect missing cart interfaces.
-- [ ] **Step 3: Implement the services, forms, views, and cart template.** Lock the customer profile in each mutation transaction before reading/updating cart rows. Use the unique customer/product constraint to prevent duplicate rows. Rotate the checkout key only after a successful mutation. Show quantities, line amounts, and the total without reserving inventory or taking money.
-- [ ] **Step 4: Generate cart migrations and verify.** Run `python manage.py makemigrations cart`, `python manage.py migrate`, and the cart test module. Expect correct totals and complete customer isolation.
-- [ ] **Step 5: Commit.** Commit with `feat: add isolated customer carts`.
+- [x] **Step 2: Run the failing tests.** Run `python manage.py test cart.tests.test_cart --verbosity 2`. Expect missing cart interfaces.
+- [x] **Step 3: Implement the services, forms, views, and cart template.** Lock the customer profile in each mutation transaction before reading/updating cart rows. Use the unique customer/product constraint to prevent duplicate rows. Rotate the checkout key only after a successful mutation. Show quantities, line amounts, and the total without reserving inventory or taking money.
+- [x] **Step 4: Generate cart migrations and verify.** Run `python manage.py makemigrations cart`, `python manage.py migrate`, and the cart test module. Expect correct totals and complete customer isolation.
+- [x] **Step 5: Commit.** Commit with `feat: add isolated customer carts`.
 
 ### Task 5: Add Simulated Wallet Top-Ups and the Customer Panel
 
