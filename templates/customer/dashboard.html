@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}پنل مشتری{% endblock %}
+{% block content %}
+<h1>پنل مشتری</h1>
+<ul>
+    <li>نام: {{ customer.user.get_full_name|default:customer.user.username }}</li>
+    <li>شماره تلفن: {{ customer.phone }}</li>
+    <li>شناسهٔ حساب: {{ customer.user.pk }}</li>
+    <li>موجودی: {{ customer.balance }} تومان</li>
+</ul>
+<p>
+    <a href="{% url 'accounts:payment' %}">شارژ کیف پول (آزمایشی)</a>
+    | <a href="{% url 'cart:detail' %}">سبد خرید</a>
+</p>
+{% endblock %}

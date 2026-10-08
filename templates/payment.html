@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}شارژ کیف پول{% endblock %}
+{% block content %}
+<h1>شارژ کیف پول</h1>
+<p>موجودی فعلی: {{ customer.balance }} تومان</p>
+<p>این پرداخت آزمایشی است و به درگاه بانکی متصل نیست.</p>
+<form method="post" novalidate>
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    {{ form.as_p }}
+    <button type="submit">افزایش موجودی</button>
+</form>
+<p><a href="{% url 'accounts:customer_dashboard' %}">بازگشت به پنل مشتری</a></p>
+{% endblock %}

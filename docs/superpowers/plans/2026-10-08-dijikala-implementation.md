@@ -192,7 +192,7 @@ self.assertEqual(other_customer_remove.status_code, 404)
 - Produces `top_up(*, customer_id: int, amount: Decimal) -> Decimal`, returning the updated balance.
 - Produces URL names `accounts:customer_dashboard` at `/customer/` and `accounts:payment` at `/payment/`.
 
-- [ ] **Step 1: Write wallet tests.** Add `test_top_up_exact_amount`, `test_customer_panel`, `test_invalid_top_up_values`, `test_balance_overflow_rejected`, and `test_posted_customer_id_ignored`. Assert a top-up of `150000.00` adds exactly that amount, and the panel displays the customer's name, phone, user ID, and balance. Reject zero, negative, `NaN`, infinity, more than two fractional digits, values beyond the money-field maximum, and a top-up that would overflow the resulting balance. Assert a posted customer ID cannot select another wallet.
+- [x] **Step 1: Write wallet tests.** Add `test_top_up_exact_amount`, `test_customer_panel`, `test_invalid_top_up_values`, `test_balance_overflow_rejected`, and `test_posted_customer_id_ignored`. Assert a top-up of `150000.00` adds exactly that amount, and the panel displays the customer's name, phone, user ID, and balance. Reject zero, negative, `NaN`, infinity, more than two fractional digits, values beyond the money-field maximum, and a top-up that would overflow the resulting balance. Assert a posted customer ID cannot select another wallet.
 
 ```python
 result = top_up(customer_id=customer.pk, amount=Decimal("150000.00"))
@@ -202,10 +202,10 @@ self.assertEqual(customer.balance, result)
 # For each rejected amount, assert no balance change and no successful response.
 ```
 
-- [ ] **Step 2: Run the failing tests.** Run `python manage.py test accounts.tests.test_wallet --verbosity 2`. Expect missing top-up service or routes.
-- [ ] **Step 3: Implement the top-up service and pages.** Validate amounts at both form and service boundaries. Lock the customer's profile during the update, use database arithmetic, refresh before returning, and display that the operation is simulated. The customer panel links to the cart and payment; Task 6 adds order-history navigation.
-- [ ] **Step 4: Run wallet and authentication tests.** Run `python manage.py test accounts.tests --verbosity 2`. Expect exact balance arithmetic, rejected financial inputs, and preserved role access.
-- [ ] **Step 5: Commit.** Commit with `feat: add simulated customer wallet top ups`.
+- [x] **Step 2: Run the failing tests.** Run `python manage.py test accounts.tests.test_wallet --verbosity 2`. Expect missing top-up service or routes.
+- [x] **Step 3: Implement the top-up service and pages.** Validate amounts at both form and service boundaries. Lock the customer's profile during the update, use database arithmetic, refresh before returning, and display that the operation is simulated. The customer panel links to the cart and payment; Task 6 adds order-history navigation.
+- [x] **Step 4: Run wallet and authentication tests.** Run `python manage.py test accounts.tests --verbosity 2`. Expect exact balance arithmetic, rejected financial inputs, and preserved role access.
+- [x] **Step 5: Commit.** Commit with `feat: add simulated customer wallet top ups`.
 
 ### Task 6: Implement Atomic Checkout and Order History
 

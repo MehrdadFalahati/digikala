@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.db import transaction
@@ -49,3 +51,14 @@ class SignupForm(UserCreationForm):
             else:
                 CustomerProfile.objects.create(user=user, phone=self.cleaned_data["phone"])
         return user
+
+
+class TopUpForm(forms.Form):
+    """Simulated wallet top-up. The money field maximum matches the model."""
+
+    amount = forms.DecimalField(
+        label="مبلغ (تومان)",
+        max_digits=14,
+        decimal_places=2,
+        min_value=Decimal("0.01"),
+    )
