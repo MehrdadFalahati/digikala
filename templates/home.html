@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}دیجی‌کالا{% endblock %}
+{% block content %}
+<h1>محصولات تازه</h1>
+<p>
+    <a href="{% url 'shops:stores' %}">همهٔ فروشگاه‌ها</a>
+    {% if user.is_authenticated %}
+        | <span>خوش آمدید، {{ user.get_username }}</span>
+        | <a href="{% url 'shops:seller_dashboard' %}">پنل فروشنده</a>
+    {% else %}
+        | <a href="{% url 'accounts:login' %}">ورود</a>
+        | <a href="{% url 'accounts:signup' %}">ثبت‌نام</a>
+    {% endif %}
+</p>
+<ul>
+    {% for product in products %}
+    <li>
+        <a href="{% url 'shops:store_detail' product.store_id %}">{{ product.name }}</a>
+        — {{ product.store.name }}
+        — {{ product.price }} تومان
+        — موجودی: {{ product.stock }}
+    </li>
+    {% empty %}
+    <li>هنوز محصولی ثبت نشده است.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

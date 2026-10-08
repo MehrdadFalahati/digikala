@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}{{ store.name }}{% endblock %}
+{% block content %}
+<h1>{{ store.name }}</h1>
+{% if store.description %}<p>{{ store.description }}</p>{% endif %}
+{% if is_owner %}
+<p><a href="{% url 'shops:product_create' store.pk %}">افزودن محصول</a></p>
+{% endif %}
+<ul>
+    {% for product in products %}
+    <li>
+        {{ product.name }}
+        — {{ product.price }} تومان
+        — موجودی: {{ product.stock }}
+        {% if is_owner %}
+            <a href="{% url 'shops:product_update' product.pk %}">ویرایش</a>
+        {% endif %}
+    </li>
+    {% empty %}
+    <li>این فروشگاه هنوز محصولی ندارد.</li>
+    {% endfor %}
+</ul>
+<p><a href="{% url 'shops:stores' %}">بازگشت به فهرست فروشگاه‌ها</a></p>
+{% endblock %}

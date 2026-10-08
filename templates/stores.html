@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}فروشگاه‌ها{% endblock %}
+{% block content %}
+<h1>فروشگاه‌ها</h1>
+<ul>
+    {% for store in stores %}
+    <li><a href="{% url 'shops:store_detail' store.pk %}">{{ store.name }}</a></li>
+    {% empty %}
+    <li>هنوز فروشگاهی ساخته نشده است.</li>
+    {% endfor %}
+</ul>
+<p><a href="{% url 'shops:home' %}">بازگشت به صفحه اصلی</a></p>
+{% endblock %}

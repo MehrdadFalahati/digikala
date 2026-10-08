@@ -141,7 +141,7 @@ with self.assertRaises(PermissionDenied):
 - Produces `StoreForm(data=None, instance=None)` and `ProductForm(data=None, files=None, instance=None)` with explicit editable-field allowlists.
 - Produces URL names `shops:home`, `shops:stores`, `shops:store_detail`, `shops:seller_dashboard`, `shops:store_create`, `shops:store_update`, `shops:product_create`, and `shops:product_update`.
 
-- [ ] **Step 1: Write catalog and ownership tests.** Add `test_newest_products_first`, `test_store_product_scope`, `test_seller_can_own_multiple_stores`, `test_foreign_store_and_product_edits_denied`, `test_owner_and_balance_fields_ignored`, and `test_invalid_product_values`. Assert `/` lists products newest first with primary-key ordering as a deterministic tie-breaker; store details exclude other stores' products. Assert sellers can create several stores and edit only their own products. Assert a forged store/owner ID is rejected, wrong roles receive 403, missing objects receive 404, and zero/negative/oversized prices and negative stock fail validation.
+- [x] **Step 1: Write catalog and ownership tests.** Add `test_newest_products_first`, `test_store_product_scope`, `test_seller_can_own_multiple_stores`, `test_foreign_store_and_product_edits_denied`, `test_owner_and_balance_fields_ignored`, and `test_invalid_product_values`. Assert `/` lists products newest first with primary-key ordering as a deterministic tie-breaker; store details exclude other stores' products. Assert sellers can create several stores and edit only their own products. Assert a forged store/owner ID is rejected, wrong roles receive 403, missing objects receive 404, and zero/negative/oversized prices and negative stock fail validation.
 
 ```python
 self.assertEqual(list(response.context["products"]), [newer, older])
@@ -152,10 +152,10 @@ self.assertEqual(store.owner_id, seller.pk)
 self.assertEqual(store.balance, Decimal("0.00"))
 ```
 
-- [ ] **Step 2: Run the failing tests.** Run `python manage.py test shops.tests.test_catalog shops.tests.test_seller_permissions --verbosity 2`. Expect missing catalog models or routes.
-- [ ] **Step 3: Implement the catalog and seller views.** Assign ownership and initial balances in server code. Filter edit lookups by the current seller and scope product creation to an owned store. Save store edits with explicit editable fields, excluding `balance`; follow the same rule for admin saves. Lock products while processing stock edits, and preserve their store relationship. Show the add-product control only to the store owner. Register models in the admin with store balances read-only. Image validation and search UI are completed in Task 7.
-- [ ] **Step 4: Generate shop migrations and verify.** Run `python manage.py makemigrations shops`, `python manage.py migrate`, and both test modules. Expect successful catalog rendering and blocked ownership violations.
-- [ ] **Step 5: Commit.** Commit with `feat: add stores products and seller management`.
+- [x] **Step 2: Run the failing tests.** Run `python manage.py test shops.tests.test_catalog shops.tests.test_seller_permissions --verbosity 2`. Expect missing catalog models or routes.
+- [x] **Step 3: Implement the catalog and seller views.** Assign ownership and initial balances in server code. Filter edit lookups by the current seller and scope product creation to an owned store. Save store edits with explicit editable fields, excluding `balance`; follow the same rule for admin saves. Lock products while processing stock edits, and preserve their store relationship. Show the add-product control only to the store owner. Register models in the admin with store balances read-only. Image validation and search UI are completed in Task 7.
+- [x] **Step 4: Generate shop migrations and verify.** Run `python manage.py makemigrations shops`, `python manage.py migrate`, and both test modules. Expect successful catalog rendering and blocked ownership violations.
+- [x] **Step 5: Commit.** Commit with `feat: add stores products and seller management`.
 
 ### Task 4: Implement Customer Carts
 
