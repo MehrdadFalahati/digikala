@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}سفارش‌های من{% endblock %}
+{% block content %}
+<h1>سفارش‌های من</h1>
+{% if orders %}
+<ul>
+    {% for order in orders %}
+    <li>
+        سفارش شمارهٔ {{ order.pk }}
+        — {{ order.total_amount }} تومان
+        — {{ order.date }}
+        | <a href="{% url 'orders:detail' order.pk %}">جزئیات</a>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>هنوز سفارشی ثبت نکرده‌اید.</p>
+{% endif %}
+<p><a href="{% url 'accounts:customer_dashboard' %}">بازگشت به پنل مشتری</a></p>
+{% endblock %}

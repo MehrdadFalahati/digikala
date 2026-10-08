@@ -39,6 +39,11 @@
     </tbody>
 </table>
 <p>جمع کل: {{ total }} تومان</p>
+<form method="post" action="{% url 'orders:checkout' %}">
+    {% csrf_token %}
+    <input type="hidden" name="checkout_key" value="{{ customer.checkout_key }}">
+    <button type="submit">پرداخت آزمایشی</button>
+</form>
 {% else %}
 <p>سبد خرید شما خالی است.</p>
 {% endif %}

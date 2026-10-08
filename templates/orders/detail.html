@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}سفارش {{ order.pk }}{% endblock %}
+{% block content %}
+<h1>سفارش شمارهٔ {{ order.pk }}</h1>
+<p>تاریخ ثبت: {{ order.date }}</p>
+<table>
+    <thead>
+        <tr>
+            <th>محصول</th>
+            <th>فروشگاه</th>
+            <th>تعداد</th>
+            <th>قیمت واحد</th>
+            <th>جمع ردیف</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in order.items.all %}
+        <tr>
+            <td>{{ item.product_name }}</td>
+            <td>{{ item.store.name }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.unit_price }} تومان</td>
+            <td>{{ item.line_total }} تومان</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<p>جمع کل: {{ order.total_amount }} تومان</p>
+<p>
+    <a href="{% url 'orders:history' %}">سفارش‌های من</a>
+    | <a href="{% url 'accounts:customer_dashboard' %}">پنل مشتری</a>
+</p>
+{% endblock %}

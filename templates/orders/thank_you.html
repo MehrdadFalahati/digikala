@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}سفارش ثبت شد{% endblock %}
+{% block content %}
+<h1>سپاس از خرید شما</h1>
+<p>سفارش شما با موفقیت ثبت شد و پرداخت آزمایشی انجام گرفت.</p>
+<h2>خلاصهٔ سفارش شمارهٔ {{ order.pk }}</h2>
+<ul>
+    {% for item in order.items.all %}
+    <li>{{ item.product_name }} × {{ item.quantity }} — {{ item.line_total }} تومان</li>
+    {% endfor %}
+</ul>
+<p>جمع کل: {{ order.total_amount }} تومان</p>
+<p>
+    <a href="{% url 'orders:detail' order.pk %}">جزئیات سفارش</a>
+    | <a href="{% url 'orders:history' %}">سفارش‌های من</a>
+    | <a href="{% url 'shops:home' %}">ادامهٔ خرید</a>
+</p>
+{% endblock %}

@@ -21,7 +21,7 @@ def detail(request):
         "product", "product__store"
     )
     total = sum((item.line_total for item in items), Decimal("0.00"))
-    return render(request, "cart.html", {"items": items, "total": total})
+    return render(request, "cart.html", {"items": items, "total": total, "customer": customer})
 
 
 @login_required
