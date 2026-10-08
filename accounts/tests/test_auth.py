@@ -29,7 +29,7 @@ class SignupTests(TestCase):
         response = self.client.post(reverse("accounts:signup"), self.make_signup_payload())
 
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, "/")
+        self.assertEqual(response.url, reverse("accounts:customer_dashboard"))
 
         user = User.objects.get(username="newuser")
         self.assertTrue(user.check_password("StrongPass!234"))
@@ -48,6 +48,7 @@ class SignupTests(TestCase):
         response = self.client.post(reverse("accounts:signup"), payload)
 
         self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, reverse("shops:seller_dashboard"))
 
         user = User.objects.get(username="newshop")
         self.assertTrue(SellerProfile.objects.filter(user=user).exists())
@@ -143,3 +144,32 @@ class LoginLogoutTests(TestCase):
         logged_out = self.client.post(reverse("accounts:logout"))
         self.assertEqual(logged_out.status_code, 200)
         self.assertNotIn("_auth_user_id", self.client.session)
+
+    def test_login_redirects_each_role_to_its_panel(self):
+        customer_user = User.objects.create_user(
+            username="panel_customer", password="StrongPass!234"
+        )
+        CustomerProfile.objects.create(user=customer_user, phone="09120000003")
+        response = self.client.post(
+            reverse("accounts:login"),
+            {"username": "panel_customer", "password": "StrongPass!234"},
+        )
+        self.assertRedirects(
+            response,
+            reverse("accounts:customer_dashboard"),
+            fetch_redirect_response=False,
+        )
+
+        seller_user = User.objects.create_user(
+            username="panel_seller", password="StrongPass!234"
+        )
+        SellerProfile.objects.create(user=seller_user)
+        response = self.client.post(
+            reverse("accounts:login"),
+            {"username": "panel_seller", "password": "StrongPass!234"},
+        )
+        self.assertRedirects(
+            response,
+            reverse("shops:seller_dashboard"),
+            fetch_redirect_response=False,
+        )
