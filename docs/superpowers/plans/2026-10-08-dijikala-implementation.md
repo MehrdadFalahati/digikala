@@ -90,8 +90,8 @@ The shared monetary checkout fixture has customer balance `100000.00`, product A
 - Consumes: environment variables `DJANGO_SECRET_KEY`, `DJANGO_DEBUG`, `DJANGO_ALLOWED_HOSTS`, `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_HOST`, and `POSTGRES_PORT`.
 - Produces: a runnable `manage.py`, the four installed apps, configured templates/static/media, and `django.db.connection` backed by PostgreSQL.
 
-- [ ] **Step 1: Create the minimal project and local database service.** Create a virtual environment, install pinned dependencies, generate the Django project/apps, and configure a `postgres:17` service with a named volume and `pg_isready` health check. Bind its port to localhost. Load local `.env` settings without overriding real environment variables. Include test-database creation permissions for the local development user.
-- [ ] **Step 2: Write the database integration test before implementing its connection settings.**
+- [x] **Step 1: Create the minimal project and local database service.** Create a virtual environment, install pinned dependencies, generate the Django project/apps, and configure a `postgres:17` service with a named volume and `pg_isready` health check. Bind its port to localhost. Load local `.env` settings without overriding real environment variables. Include test-database creation permissions for the local development user.
+- [x] **Step 2: Write the database integration test before implementing its connection settings.**
 
 ```python
 def test_database_is_postgresql(self):
@@ -101,9 +101,9 @@ def test_database_is_postgresql(self):
         self.assertEqual(cursor.fetchone(), (1,))
 ```
 
-- [ ] **Step 3: Run the test to establish the failing baseline.** Run `python manage.py test config.tests.test_database --verbosity 2`. Expect a backend assertion or configuration failure while PostgreSQL settings are unfinished.
-- [ ] **Step 4: Implement and verify the PostgreSQL settings.** Run `docker compose up -d --wait`, `python manage.py migrate`, `python manage.py check`, and the test above. Expect a healthy database, successful migrations, no Django check errors, and a passing connection test.
-- [ ] **Step 5: Commit the working foundation.** Stage only this task's files and commit with `chore: bootstrap Django marketplace with PostgreSQL`.
+- [x] **Step 3: Run the test to establish the failing baseline.** Run `python manage.py test config.tests.test_database --verbosity 2`. Expect a backend assertion or configuration failure while PostgreSQL settings are unfinished.
+- [x] **Step 4: Implement and verify the PostgreSQL settings.** Run `docker compose up -d --wait`, `python manage.py migrate`, `python manage.py check`, and the test above. Expect a healthy database, successful migrations, no Django check errors, and a passing connection test.
+- [x] **Step 5: Commit the working foundation.** Stage only this task's files and commit with `chore: bootstrap Django marketplace with PostgreSQL`.
 
 ### Task 2: Implement Registration, Login, and Role Guards
 
