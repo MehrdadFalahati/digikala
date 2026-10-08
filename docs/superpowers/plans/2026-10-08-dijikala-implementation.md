@@ -115,7 +115,7 @@ def test_database_is_postgresql(self):
 - Produces `customer_for_user(user: User) -> CustomerProfile` and `seller_for_user(user: User) -> SellerProfile`, raising `PermissionDenied` for the wrong role.
 - Produces URL names `accounts:signup`, `accounts:login`, and `accounts:logout`.
 
-- [ ] **Step 1: Write role-specific registration and access tests.** Add `test_customer_signup`, `test_seller_signup`, `test_invalid_signup`, `test_signup_cannot_grant_staff_access`, `test_role_guards`, and `test_login_and_post_only_logout`. Assert successful customer registration creates one customer profile with zero balance and no seller profile; seller registration does the inverse. Assert duplicate usernames, password mismatch, invalid roles, and posted `is_staff`/`is_superuser` values do not grant privileges. Assert login succeeds with valid credentials and logout requires POST.
+- [x] **Step 1: Write role-specific registration and access tests.** Add `test_customer_signup`, `test_seller_signup`, `test_invalid_signup`, `test_signup_cannot_grant_staff_access`, `test_role_guards`, and `test_login_and_post_only_logout`. Assert successful customer registration creates one customer profile with zero balance and no seller profile; seller registration does the inverse. Assert duplicate usernames, password mismatch, invalid roles, and posted `is_staff`/`is_superuser` values do not grant privileges. Assert login succeeds with valid credentials and logout requires POST.
 
 ```python
 self.assertEqual(customer.balance, Decimal("0.00"))
@@ -126,10 +126,10 @@ with self.assertRaises(PermissionDenied):
     seller_for_user(user)
 ```
 
-- [ ] **Step 2: Run the failing tests.** Run `python manage.py test accounts.tests.test_auth --verbosity 2`. Expect missing model, form, or route failures.
-- [ ] **Step 3: Implement the profiles, validated signup form, role guards, and authentication routes.** Use Django's password-validation and authentication forms. Require phone for customers. Register profiles in the admin, with balances and checkout keys read-only. Keep the initial shared template minimal until Task 7 integrates navigation.
-- [ ] **Step 4: Generate account migrations and run the tests.** Run `python manage.py makemigrations accounts`, `python manage.py migrate`, and the test command above. Expect every account and role test to pass.
-- [ ] **Step 5: Commit.** Commit with `feat: add customer and seller authentication`.
+- [x] **Step 2: Run the failing tests.** Run `python manage.py test accounts.tests.test_auth --verbosity 2`. Expect missing model, form, or route failures.
+- [x] **Step 3: Implement the profiles, validated signup form, role guards, and authentication routes.** Use Django's password-validation and authentication forms. Require phone for customers. Register profiles in the admin, with balances and checkout keys read-only. Keep the initial shared template minimal until Task 7 integrates navigation.
+- [x] **Step 4: Generate account migrations and run the tests.** Run `python manage.py makemigrations accounts`, `python manage.py migrate`, and the test command above. Expect every account and role test to pass.
+- [x] **Step 5: Commit.** Commit with `feat: add customer and seller authentication`.
 
 ### Task 3: Build the Public Catalog and Seller Management
 
