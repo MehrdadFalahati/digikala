@@ -33,6 +33,8 @@ class SignupTests(TestCase):
 
         user = User.objects.get(username="newuser")
         self.assertTrue(user.check_password("StrongPass!234"))
+        self.assertEqual(user.first_name, "کاربر")
+        self.assertEqual(user.last_name, "تازه")
         self.assertFalse(user.is_staff)
         self.assertFalse(user.is_superuser)
         self.assertFalse(SellerProfile.objects.filter(user=user).exists())
@@ -51,6 +53,8 @@ class SignupTests(TestCase):
         self.assertEqual(response.url, reverse("shops:seller_dashboard"))
 
         user = User.objects.get(username="newshop")
+        self.assertEqual(user.first_name, "کاربر")
+        self.assertEqual(user.last_name, "تازه")
         self.assertTrue(SellerProfile.objects.filter(user=user).exists())
         self.assertFalse(CustomerProfile.objects.filter(user=user).exists())
         self.assertFalse(user.is_staff)

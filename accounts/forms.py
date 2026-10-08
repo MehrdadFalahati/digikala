@@ -27,7 +27,7 @@ class SignupForm(UserCreationForm):
 
     class Meta(UserCreationForm.Meta):
         model = UserCreationForm.Meta.model
-        fields = ("username",)
+        fields = ("username", "first_name", "last_name")
 
     def clean(self):
         cleaned_data = super().clean()
